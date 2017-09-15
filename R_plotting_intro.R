@@ -90,4 +90,16 @@ diversity <- df %>%
   filter(Reactor.phase == "Startup") %>% 
   select(contains("Diversity"))
 
+#### group & summarize ####
+meanph <- df %>%  group_by(Reactor.phase) %>% 
+                  summarise(mean.ph = mean(ph), 
+                            mean.d2 = mean(Diversity...D2),
+                            sd.ph = sd(ph))
+meanph
 
+# summary for reactor phase 2 & add sdv of d2 and log10 transf cell count
+
+std2 <- df %>%  filter(Reactor.cycle == 2) %>% 
+                summarise(sd.rc2 = sd(Diversity...D2),
+                          meanlogcell = mean(log10(Cell.density..cells.mL.)))
+std2
