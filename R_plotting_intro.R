@@ -129,5 +129,22 @@ df_noNA
 rowSums(is.na(df))
 is.na(df_noNA)
 
+#### combining dplyr and ggplot2 ####
 
+p1 <- ggplot(data = df, aes(x = Timepoint, y = ph, fill = Reactor.cycle))
+p1 <- p1 + geom_point(shape=21, size=4, alpha=0.5)
+p2 <- p1 + theme_bw() + geom_line()
+
+df.2 <- df %>%  filter(Reactor.cycle == 2)
+p2 <- df %>%  filter(Reactor.cycle == 2) %>% 
+          ggplot(aes(x=Timepoint, y=Cell.density..cells.mL., fill=Cell.density..cells.mL.)) + geom_point(shape=21, size=4))
+
+p2 <- df %>% filter(Reactor.cycle==2) %>% 
+  ggplot(aes(x = Timepoint,y = Cell.density..cells.mL., fill = Cell.density..cells.mL.)) +
+  geom_point(shape = 21, size = 4)
+p2
+p2 + scale_y_log10()
+
+p2.2 <- df %>% ggplot(aes(x = Timepoint,y = Cell.density..cells.mL., fill = Cell.density..cells.mL.)) +
+  geom_point(shape = 21, size = 4)
 
