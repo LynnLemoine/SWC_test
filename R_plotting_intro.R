@@ -100,6 +100,34 @@ meanph
 # summary for reactor phase 2 & add sdv of d2 and log10 transf cell count
 
 std2 <- df %>%  filter(Reactor.cycle == 2) %>% 
-                summarise(sd.rc2 = sd(Diversity...D2),
-                          meanlogcell = mean(log10(Cell.density..cells.mL.)))
+                mutate(condratio = Conductivity/temp) %>% 
+                group_by(Reactor.phase) %>% 
+              summarise(mean.ph = mean(ph), 
+            mean.d2 = mean(Diversity...D2),
+            sd.ph = sd(ph),
+            sd.rc2 = sd(Diversity...D2),
+                          meanlogcell = mean(log10(Cell.density..cells.mL.),
+                          meanratio = mean(condratio)))
 std2
+
+
+#### join datasets ####
+physicochem <- df %>% select(sample_title, temp, ph, Conductivity)
+diversity <- df %>% select(sample_title, contains("Diversity"))
+View(physicochem)
+View(diversity)
+
+physicodiv <- full_join(physicochem, diversity, by="sample_title")
+View(physicodiv)
+
+# partial joining to prevent inserting NA data in table
+# semi join -> useful to filter for matching rows in two tables
+
+# remove rows that are empty
+df_noNA <- na.exclude(df)
+df_noNA
+rowSums(is.na(df))
+is.na(df_noNA)
+
+
+
