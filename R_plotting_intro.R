@@ -48,7 +48,16 @@ p6
 
 # ggplot Diversity DO
 
+plot_div <- ggplot(data = df, aes(x = Timepoint, y = Diversity...D0, fill = Reactor.cycle)) + geom_point(shape=21, size=4, alpha=0.5) + theme_bw()
+plot_div
 
+p5<-ggplot(data=df, aes(x=Timepoint , y=Diversity...D0, fill=Reactor.phase ))+
+  geom_point(shape=21, size=5)
+P6 <- p5 + facet_grid(~Reactor.phase)+theme_dark()
+P6
 
-
-
+pp1 <- ggplot(data=df,aes(x= Timepoint,y=Conductivity,fill=Reactor.phase))
+pp1 <- pp1 + geom_point(shape=21,size=4,alpha = 0.5) + theme_bw() + geom_line(aes(color=Reactor.cycle)) # Facet it 
+pp3 <- pp1 + facet_grid(~Reactor.cycle) 
+pp4 <- pp1 + facet_grid(Reactor.phase~Reactor.cycle) 
+pp4
