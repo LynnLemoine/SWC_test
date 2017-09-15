@@ -1,10 +1,12 @@
+#### load data ####
 df <- read.csv("Metadata.csv")
 
 # which variables?
 str(df)
 
-# start plotting
+#### load necessary packages ####
 library(ggplot2)
+library(dplyr)
 
 # make first plot
 ggplot(data = df, aes(x = Timepoint, y = ph, fill = Reactor.cycle)) +
@@ -61,3 +63,31 @@ pp1 <- pp1 + geom_point(shape=21,size=4,alpha = 0.5) + theme_bw() + geom_line(ae
 pp3 <- pp1 + facet_grid(~Reactor.cycle) 
 pp4 <- pp1 + facet_grid(Reactor.phase~Reactor.cycle) 
 pp4
+
+
+#### dplyr intro####
+
+mean(df[df$Reactor.phase == "Control", "ph"]) #calc mean ph for all rows where reactor.phase variable = "control"
+levels(df$Reactor.phase)
+
+
+#### select ####
+physicochem <- select(df, ph, temp, Conductivity)
+head(physicochem)
+# %>% #alternative for pipe in linux, advantage is that is suggests names from columns, and can be used to combine pipes eg filter, select, mean...
+
+physicochem <- df %>% select(ph,temp,Conductivity)
+
+physicochem.control <- df %>% 
+  filter(Reactor.phase == "Control") %>% 
+  select(ph,temp,Conductivity)
+
+# to select only diversity parameters
+# for reactor phase "Startup"
+grep("Diversity", names(df), value=TRUE)
+
+diversity <- df %>% 
+  filter(Reactor.phase == "Startup") %>% 
+  select(contains("Diversity"))
+
+
